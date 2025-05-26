@@ -68,9 +68,6 @@ release.properties
 **/out/
 !gradle/wrapper/gradle-wrapper.jar
 gradle-app.setting
-**/*.gradle*
-**/gradlew
-**/gradlew.bat
 
 # ========================================
 # Test/Reports
