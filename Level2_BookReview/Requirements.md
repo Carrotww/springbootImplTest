@@ -94,6 +94,7 @@
 * **Request Header:**
 
   * Authorization: Bearer {JWT}
+  * 
 * **Request Body:**
 
 ```json
