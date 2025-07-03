@@ -6,7 +6,8 @@ import org.junit.jupiter.api.Test;
 class UserControllerTest {
 
 	@Test
-	void test {
+	void test() {
 		System.out.println("test");
+		return;
 	}
 }

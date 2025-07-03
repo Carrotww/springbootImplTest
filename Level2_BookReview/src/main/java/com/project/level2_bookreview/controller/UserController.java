@@ -1,6 +1,5 @@
 package com.project.level2_bookreview.controller;
 
-// import org.apache.coyote.Request;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
