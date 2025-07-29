@@ -1,10 +1,7 @@
 package com.project.level2_bookreview.domain;
 
-import com.sun.istack.NotNull;
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
 import lombok.Data;
+import jakarta.persistence.*;
 
 /**
  * User
@@ -15,12 +12,9 @@ public class User {
 	@GeneratedValue
 	private Long id;
 
-	@NotNull
 	private String email;
 
-	@NotNull
 	private String password;
 	
-	@NotNull
 	private String nickname;
 }
