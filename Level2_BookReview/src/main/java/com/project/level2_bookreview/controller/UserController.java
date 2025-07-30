@@ -5,6 +5,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.project.level2_bookreview.dto.LoginDto;
+
 @RestController
 @RequestMapping("/api")
 public class UserController {
@@ -16,7 +18,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public void loginUser(@RequestBody Void t) {
+    public void loginUser(@RequestBody LoginDto loginDto) {
         // Response 200 ok
         return;
     }

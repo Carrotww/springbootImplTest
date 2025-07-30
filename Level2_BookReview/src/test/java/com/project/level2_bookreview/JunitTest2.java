@@ -2,13 +2,12 @@ package com.project.level2_bookreview;
 
 import org.junit.jupiter.api.*;
 
-import lombok.Getter;
-
 import static org.junit.jupiter.api.Assertions.*;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
 
 public class JunitTest2 {
 
-    @Getter
     static class Person {
         String name;
         int age;
@@ -16,6 +15,14 @@ public class JunitTest2 {
         Person(String n, int a) {
             this.name = n;
             this.age = a;
+        }
+
+        String getName() {
+            return this.name;
+        }
+
+        int getAge() {
+            return this.age;
         }
     }
 
@@ -55,6 +62,41 @@ public class JunitTest2 {
                 );
             }
         );
+    }
+
+    @Test
+    void ExceptionTest() {
+        IllegalArgumentException exception =
+            assertThrows(IllegalArgumentException.class, () -> {
+                throw new IllegalArgumentException("custom IllegalArgumentException");
+            });
+        
+        assertEquals("custom IllegalArgumentException", exception.getMessage());
+
+        // RuntimeException 가 IllegalArgumentException에 상위 클래스이기 때문에 통과
+        assertThrows(RuntimeException.class, () -> {
+            throw new IllegalArgumentException("runtime exception");
+        });
+    }
+
+
+    @Test
+    void ExceptionExactlyTest() {
+        IllegalArgumentException exception =
+            assertThrows(IllegalArgumentException.class, () -> {
+                throw new IllegalArgumentException("custom IllegalArgumentException");
+            });
+        
+        assertEquals("custom IllegalArgumentException", exception.getMessage());
+
+        assertThrowsExactly(IllegalArgumentException.class, () -> {
+            throw new IllegalArgumentException("runtime exception");
+        });
+    }
+
+    @Test
+    void AssertThatTest() {
+        assertThat(person.getName(), containsString("mi"));
     }
 
     private static String ErrorGenerater(char a, char b) {

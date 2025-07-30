@@ -8,8 +8,10 @@ import jakarta.persistence.*;
  */
 @Data
 @Entity
+@Table(name = "users")
 public class User {
-	@GeneratedValue
+
+	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	private String email;
