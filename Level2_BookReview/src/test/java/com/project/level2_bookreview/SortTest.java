@@ -4,6 +4,9 @@ import org.junit.jupiter.api.Test;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.*;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.io.*;
 
 public class SortTest {
@@ -48,12 +51,94 @@ public class SortTest {
     void comparableTest() {
         Function<Integer, String> impleFunction = x -> "value" + x;
 
-        System.out.println(impleFunction.apply(10));
+        // System.out.println(impleFunction.apply(10));
+
+        class Person implements Comparable<Person> {
+            int age;
+            String name;
+
+            Person(int a, String n) {
+                this.age = a;
+                this.name = n;
+            }
+
+            // 나이 어린 순으로 정렬 후 나이가 같으면 이름순으로 정렬 둘 다 오름차순
+            @Override
+            public int compareTo(Person o) {
+                if (this.age != o.age) {
+                    return Integer.compare(this.age, o.age);
+                }
+                return this.name.compareTo(o.name);
+            }
+        }
+
+        class Person2 implements Comparable<Person2> {
+            int age;
+            String name;
+
+            Person2(int a, String n) {
+                this.age = a;
+                this.name = n;
+            }
+
+            @Override
+            public int compareTo(Person2 o) {
+                if (this.age != o.age) {
+                    return Integer.compare(o.age, this.age);
+                }
+
+                return o.name.compareTo(this.name);
+            }
+
+            @Override
+            public String toString() {
+                return "age : " + this.age + " name : " + this.name;
+            }
+        }
+
+        List<Person2> person2 = new ArrayList<>();
+
+        person2.add(new Person2(17, "aaaaa"));
+        person2.add(new Person2(16, "aaaaaaa16"));
+        person2.add(new Person2(17, "bbbbbbbbbbb"));
+        person2.add(new Person2(100, "oldMan"));
+        person2.add(new Person2(11, "youngMan"));
+
+        // 정렬 결과를 테스트
+        person2.sort(null); // Comparable 기준으로 정렬
+        assertEquals(100, person2.get(0).age); // 첫 번째가 가장 나이 많은지 확인
+        assertEquals("oldMan", person2.get(0).name);
+        System.out.println(person2);
+
+        person2.sort(Comparator.reverseOrder());
+        System.out.println(person2);
     }
 
     @Test
     void comparatorTest() {
+        class Book {
+            int pages;
+            String name;
 
+            Book(int p, String n) {
+                this.pages = p;
+                this.name = n;
+            }
+        }
+
+        // Comparator 사용법
+
+        // 1 클래스 만들기
+        class ComparatorAsc implements Comparator<Book> {
+            @Override
+            public int compare(Book a, Book b) {
+                return 0;
+            }
+        }
+
+        // 2 익명 클래스 만들기
+
+        // 3 람다 사용
     }
 
     @Test
