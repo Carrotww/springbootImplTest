@@ -142,7 +142,20 @@ public class SortTest {
     }
 
     @Test
-    void boxedTest() {
+    void PqTest() {
+        Queue<Integer> pq = new PriorityQueue<>();
+
+        for (int i = 0; i < 10; i++) {
+            int t = (int) Math.random();
+            System.out.println(t);
+            pq.add(t);
+        }
+
+        System.out.println(pq);
+    }
+
+    @Test
+    void boxedTest(long currentTimeMillis) {
         int N = 10_000_000;
 
         long start1 = System.currentTimeMillis();
@@ -153,7 +166,7 @@ public class SortTest {
         long end1 = System.currentTimeMillis();
         System.out.println("Stream<Integer> 합계: " + sum1 + ", 실행 시간: " + (end1 - start1) + "ms");
 
-        long start2 = System.currentTimeMillis();
+        long start2 = currentTimeMillis;
         long sum2 = IntStream.range(0, N)
                              .sum();
         long end2 = System.currentTimeMillis();
