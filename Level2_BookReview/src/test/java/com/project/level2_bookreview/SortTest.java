@@ -132,7 +132,10 @@ public class SortTest {
         class ComparatorAsc implements Comparator<Book> {
             @Override
             public int compare(Book a, Book b) {
-                return 0;
+                if (a.pages == b.pages) {
+                    return Integer.compare(a.pages, b.pages);
+                }
+                return a.name.compareTo(b.name);
             }
         }
 
