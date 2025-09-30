@@ -9,6 +9,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.*;
 
+@FunctionalInterface
+interface TestInterface {
+    int max(int a, int b);
+}
+
 public class SortTest {
 
     static class Student {
@@ -116,6 +121,7 @@ public class SortTest {
 
     @Test
     void comparatorTest() {
+
         class Book {
             int pages;
             String name;
@@ -125,6 +131,11 @@ public class SortTest {
                 this.name = n;
             }
         }
+
+        List<Book> ary = new ArrayList<>();
+        ary.add(new Book(100, "ababa"));
+        ary.add(new Book(500, "bba"));
+        ary.add(new Book(200, "caba"));
 
         // Comparator 사용법
 
@@ -140,6 +151,23 @@ public class SortTest {
         }
 
         // 2 익명 클래스 만들기
+        ary.sort(new Comparator<Book>() {
+            @Override
+            public int compare(Book a, Book b) {
+                if (a.pages == b.pages) {
+                    return a.pages - b.pages;
+                }
+                return a.name.compareTo(b.name);
+            }
+        });
+
+        TestInterface testInterface = (a, b) -> (a > b) ? a : b;
+
+        TestInterface testInterface2 = (a, b) -> {
+            if (a > b) {
+                return a;
+            } return b;
+        };
 
         // 3 람다 사용
     }
