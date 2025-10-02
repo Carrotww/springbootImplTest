@@ -132,6 +132,24 @@ public class SortTest {
             }
         }
 
+        class Book2 implements Comparable<Book2> {
+            int pages;
+            String name;
+
+            Book2(int p, String n) {
+                this.pages = p;
+                this.name = n;
+            }
+
+            @Override
+            public int compareTo(Book2 b) {
+                if (this.pages == b.pages) {
+                    return this.name.compareTo(b.name);
+                }
+                return Integer.compare(this.pages, b.pages);
+            }
+        }
+
         List<Book> ary = new ArrayList<>();
         ary.add(new Book(100, "ababa"));
         ary.add(new Book(500, "bba"));
@@ -170,6 +188,22 @@ public class SortTest {
         };
 
         // 3 람다 사용
+
+
+        // Book name asc, age asc
+        ary.sort(Comparator.comparing((Book b) -> b.name).thenComparingInt(b -> b.pages));
+
+        // Book name desc, age asc
+        ary.sort(Comparator.comparing(((Book b) -> b.name), Comparator.reverseOrder()).thenComparing(b -> b.pages));
+
+        // Book age asc, name asc
+        ary.sort(Comparator.comparing((Book b) -> b.pages).thenComparing(b -> b.name));
+
+        // Book age desc, name desc
+        ary.sort(Comparator.comparing(((Book b) -> b.pages), Comparator.reverseOrder()).thenComparing(b -> b.name));
+
+        ary.sort(Comparator.comparingInt((Book b) -> b.pages).reversed().thenComparing(b -> b.name));
+
     }
 
     @Test
