@@ -204,6 +204,67 @@ public class SortTest {
 
         ary.sort(Comparator.comparingInt((Book b) -> b.pages).reversed().thenComparing(b -> b.name));
 
+        int[][] graph = new int[3][3];
+        int cnt = 1;
+
+        for (int i = 0; i < graph.length; i++) {
+            for (int j = 0; j < graph[0].length; j++) {
+                graph[i][j] = cnt++;
+            }
+        }
+
+        int[][] temp = new int[graph.length][];
+        int[][] temp2 = graph;
+
+        for (int i = 0; i < graph.length; i++) {
+            temp[i] = graph[i].clone();
+        }
+
+        temp[1][1] = 999;
+
+        for (int i = 0; i < graph.length; i++) {
+            if (i == 0) System.out.println("print graph");
+            System.out.println(Arrays.toString(graph[i]));
+        }
+
+        temp2[1][1] = 777;
+
+        for (int i = 0; i < graph.length; i++) {
+            if (i == 0) System.out.println("print graph");
+            System.out.println(Arrays.toString(graph[i]));
+        }
+
+        Queue<int[]> pq = new PriorityQueue<>(Comparator.comparing((int[] a) -> a[0]).reversed());
+        Queue<int[]> pq2 = new PriorityQueue<>(Comparator.comparing((int[] a) -> a[0]).reversed().thenComparing(a -> a[1]));
+    }
+
+    @Test
+    void mapTest() {
+        Set<Integer> set = new HashSet<>();
+
+        for (int i = 0; i < 10; i++) set.add(i);
+
+        for (int i = 0; i < 10; i++) {
+            if (i % 2 == 0 && set.contains(i)) set.remove(i);
+        }
+
+        System.out.println(set);
+
+        Map<String, Integer> map = new HashMap<>();
+
+        map.put("apple", 3);     // key: apple, value: 3
+        map.put("banana", 2);
+        map.put("apple", 5);     // 기존 값 덮어쓰기 (3 → 5)
+
+        if (map.containsKey("apple")) {
+            map.getOrDefault("apple", 1);
+        }
+
+        for (Map.Entry<String, Integer> entry : map.entrySet()) {
+            System.out.println();
+            System.out.println(entry.getKey());
+            System.out.println(entry.getValue());
+        }
     }
 
     @Test
