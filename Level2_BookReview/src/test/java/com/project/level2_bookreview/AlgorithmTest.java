@@ -108,4 +108,27 @@ class Search {
         }
         return left;
     }
+
+    // return -> 부분합 개수
+    static int twoPointer(int[] ary, int target) {
+        // target -> 찾아야 할 부분 합
+
+        int n = ary.length;
+        int start = 0;
+        int end = 0;
+        int sum = 0;
+        int result = 0;
+
+        for (; start < n; start++) {
+            while (end < n && sum < target) {
+                sum += ary[end];
+                end++;
+            }
+            if (sum == target) {
+                result++;
+            }
+            sum -= ary[start];
+        }
+        return result;
+    }
 }
