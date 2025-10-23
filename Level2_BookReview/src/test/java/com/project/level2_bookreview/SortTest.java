@@ -29,8 +29,8 @@ public class SortTest {
         }
     }
 
-    static int[] intAry = {5, 1, 4, 3, 2};
-    static Integer[] IntegerAry = {6, 1, 4, 56, 2, 1};
+    static int[] intAry = { 5, 1, 4, 3, 2 };
+    static Integer[] IntegerAry = { 6, 1, 4, 56, 2, 1 };
 
     @Test
     void test() {
@@ -169,6 +169,7 @@ public class SortTest {
         }
 
         // 2 익명 클래스 만들기
+
         ary.sort(new Comparator<Book>() {
             @Override
             public int compare(Book a, Book b) {
@@ -184,11 +185,11 @@ public class SortTest {
         TestInterface testInterface2 = (a, b) -> {
             if (a > b) {
                 return a;
-            } return b;
+            }
+            return b;
         };
 
         // 3 람다 사용
-
 
         // Book name asc, age asc
         ary.sort(Comparator.comparing((Book b) -> b.name).thenComparingInt(b -> b.pages));
@@ -223,38 +224,43 @@ public class SortTest {
         temp[1][1] = 999;
 
         for (int i = 0; i < graph.length; i++) {
-            if (i == 0) System.out.println("print graph");
+            if (i == 0)
+                System.out.println("print graph");
             System.out.println(Arrays.toString(graph[i]));
         }
 
         temp2[1][1] = 777;
 
         for (int i = 0; i < graph.length; i++) {
-            if (i == 0) System.out.println("print graph");
+            if (i == 0)
+                System.out.println("print graph");
             System.out.println(Arrays.toString(graph[i]));
         }
 
         Queue<int[]> pq = new PriorityQueue<>(Comparator.comparing((int[] a) -> a[0]).reversed());
-        Queue<int[]> pq2 = new PriorityQueue<>(Comparator.comparing((int[] a) -> a[0]).reversed().thenComparing(a -> a[1]));
+        Queue<int[]> pq2 = new PriorityQueue<>(
+                Comparator.comparing((int[] a) -> a[0]).reversed().thenComparing(a -> a[1]));
     }
 
     @Test
     void mapTest() {
         Set<Integer> set = new HashSet<>();
 
-        for (int i = 0; i < 10; i++) set.add(i);
+        for (int i = 0; i < 10; i++)
+            set.add(i);
 
         for (int i = 0; i < 10; i++) {
-            if (i % 2 == 0 && set.contains(i)) set.remove(i);
+            if (i % 2 == 0 && set.contains(i))
+                set.remove(i);
         }
 
         System.out.println(set);
 
         Map<String, Integer> map = new HashMap<>();
 
-        map.put("apple", 3);     // key: apple, value: 3
+        map.put("apple", 3); // key: apple, value: 3
         map.put("banana", 2);
-        map.put("apple", 5);     // 기존 값 덮어쓰기 (3 → 5)
+        map.put("apple", 5); // 기존 값 덮어쓰기 (3 → 5)
 
         if (map.containsKey("apple")) {
             map.getOrDefault("apple", 1);
@@ -286,24 +292,69 @@ public class SortTest {
 
         long start1 = System.currentTimeMillis();
         long sum1 = Stream.iterate(0, i -> i + 1)
-                          .limit(N)
-                          .mapToInt(Integer::intValue)
-                          .sum();
+                .limit(N)
+                .mapToInt(Integer::intValue)
+                .sum();
         long end1 = System.currentTimeMillis();
         System.out.println("Stream<Integer> 합계: " + sum1 + ", 실행 시간: " + (end1 - start1) + "ms");
 
         long start2 = currentTimeMillis;
         long sum2 = IntStream.range(0, N)
-                             .sum();
+                .sum();
         long end2 = System.currentTimeMillis();
         System.out.println("IntStream 합계: " + sum2 + ", 실행 시간: " + (end2 - start2) + "ms");
 
         long start3 = System.currentTimeMillis();
         long sum3 = IntStream.range(0, N)
-                             .boxed()
-                             .mapToInt(Integer::intValue)
-                             .sum();
+                .boxed()
+                .mapToInt(Integer::intValue)
+                .sum();
         long end3 = System.currentTimeMillis();
         System.out.println("IntStream.boxed() 합계: " + sum3 + ", 실행 시간: " + (end3 - start3) + "ms");
+    }
+
+    @Test
+    void totalTest() {
+        // 1. int -> String
+        int i = 123;
+
+        String intToString1 = String.valueOf(i);
+        String intToString2 = Integer.toString(i);
+
+        // 2. long -> String
+        long l = 123;
+
+        String longToString1 = String.valueOf(l);
+        String longToString2 = Long.toString(l);
+
+        // 3. String -> int, long
+        String s = "101010";
+
+        int stringToInt1 = Integer.parseInt(s);
+        // 2진수 값을 10진수로 변경
+        int stringToInt2 = Integer.parseInt(s, 2);
+
+        // 정수 -> 문자열
+        String binaryToNum = Integer.toBinaryString(stringToInt2);
+
+        // 5. char -> int, int -> char
+        char c1 = 'c';
+        int intc1 = c1 - 'a'; // 2
+        char c2 = (char) (intc1 + 'a'); // c
+
+        // 6. char -> string
+        char c3 = 'd';
+        String sc = String.valueOf(c3);
+
+        // 정렬
+        // 1. int[] 정렬
+        int[] a1 = { 3, 1, 2 };
+        Arrays.sort(a1);
+        Integer[] a2 = {2, 1, 3};
+        Arrays.sort(a2, Comparator.comparingInt((Integer x) -> x).reversed());
+
+        List<Integer> ary1 = new ArrayList<>(Arrays.asList(1, 2, 3, 0, -1, 10));
+        ary1.sort(Comparator.naturalOrder());
+        ary1.sort(Comparator.reverseOrder());
     }
 }
