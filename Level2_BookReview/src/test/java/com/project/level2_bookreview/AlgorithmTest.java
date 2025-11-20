@@ -230,9 +230,6 @@ class Search {
         }
     }
 
-    static void treePointer(int[] ary, int target) {
-    }
-
     // k = 총 길이
     static void slidingWindow2(int[] ary, int target, int k) {
         int left = 1;
@@ -253,7 +250,7 @@ class Search {
         System.out.println(result);
     }
 
-    static void slidingWindow3(int[] ary, int target, int k) {
+    static void slidingWindow22(int[] ary, int target, int k) {
         // for문 하나로 돌면서 0 부터 끝까까 그러면서 k 전에 있는건 지움
 
         int n = ary.length;
@@ -271,5 +268,115 @@ class Search {
         }
 
         System.out.println(result);
+    }
+
+    static int binarySearch3(int[] ary, int target) {
+        int left = 0;
+        int right = ary.length - 1;
+
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+
+            if (ary[mid] == target) {
+                return mid;
+            } else if (ary[mid] < target) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+
+        return -1;
+    }
+
+    static int leftBound3(int[] ary, int target) {
+        int left = 0;
+        int right = ary.length;
+
+        while (left < right) {
+            int mid = left + (right - left) / 2;
+
+            if (ary[mid] < target) {
+                left = mid + 1;
+            } else {
+                right = mid;
+            }
+        }
+
+        return left;
+    }
+
+    static int rightBound3(int[] ary, int target) {
+        int left = 0;
+        int right = ary.length;
+
+        while (left < right) {
+            int mid = left + (right - left) / 2;
+
+            if (ary[mid] <= target) {
+                left = mid + 1;
+            } else {
+                right = mid;
+            }
+        }
+
+        return left;
+    }
+
+    static int twoPointer3(int[] ary, int target) {
+        int end = 0;
+        int sum = 0;
+        int result = 0;
+        int n = ary.length;
+
+        for (int i = 0; i < n; i++) {
+            while (end < n && sum < target) {
+                sum += ary[end++];
+            }
+
+            if (sum == target) result++;
+
+            sum -= ary[i];
+        }
+
+        return result;
+    }
+    
+    static int slidingWindow3(int[] ary, int target, int k) {
+        int sum = 0;
+        int result = 0;
+        int n = ary.length;
+
+        for (int i = 0; i < n; i++) {
+            sum += ary[i];
+
+            if (i >= k) sum -= ary[i - k];
+
+            if (i >= k - 1 && sum == target) result++;
+        }
+
+        return result;
+    }
+
+    static void comparator1(int[][] ary, List<List<Integer>> aryList) {
+
+        Comparator<int[]> comp = (a, b) -> {
+            if (a[0] != b[0]) return Integer.compare(a[0], b[0]);
+            return Integer.compare(b[1], a[1]);
+        };
+
+        Arrays.sort(ary, comp);
+
+        Arrays.sort(ary, (x, y) -> {
+            if (x[0] != y[0]) return Integer.compare(x[0], y[0]);
+            return Integer.compare(x[0], y[0]);
+        });
+
+        Comparator<List<Integer>> comp2 = (a, b) -> {
+            if (a.get(0) != b.get(0)) return Integer.compare(b.get(0), a.get(0));
+            return Integer.compare(a.get(1), b.get(1));
+        };
+
+        aryList.sort(comp2);
     }
 }
