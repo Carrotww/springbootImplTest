@@ -287,33 +287,6 @@ public class SortTest {
     }
 
     @Test
-    void boxedTest(long currentTimeMillis) {
-        int N = 10_000_000;
-
-        long start1 = System.currentTimeMillis();
-        long sum1 = Stream.iterate(0, i -> i + 1)
-                .limit(N)
-                .mapToInt(Integer::intValue)
-                .sum();
-        long end1 = System.currentTimeMillis();
-        System.out.println("Stream<Integer> 합계: " + sum1 + ", 실행 시간: " + (end1 - start1) + "ms");
-
-        long start2 = currentTimeMillis;
-        long sum2 = IntStream.range(0, N)
-                .sum();
-        long end2 = System.currentTimeMillis();
-        System.out.println("IntStream 합계: " + sum2 + ", 실행 시간: " + (end2 - start2) + "ms");
-
-        long start3 = System.currentTimeMillis();
-        long sum3 = IntStream.range(0, N)
-                .boxed()
-                .mapToInt(Integer::intValue)
-                .sum();
-        long end3 = System.currentTimeMillis();
-        System.out.println("IntStream.boxed() 합계: " + sum3 + ", 실행 시간: " + (end3 - start3) + "ms");
-    }
-
-    @Test
     void totalTest() {
         // 1. int -> String
         int i = 123;
@@ -379,5 +352,31 @@ public class SortTest {
         dq.pop();
 
         System.out.println(dq);
+    }
+
+    @Test
+    void test_2025_11_04() {
+        // PriorityQueue<int[]> pq = new PriorityQueue<>(
+        //     // Comparator.comparingInt((int[] a) -> a[0]).reversed().thenComparingInt(a -> a[1]).reversed()
+        //     Comparator.comparingInt((int[] a) -> -a[0]).thenComparingInt(a -> -a[1])
+        // );
+
+        PriorityQueue<int[]> pq = new PriorityQueue<> (
+            (a, b) -> {
+                if (a[0] != b[0]) return Integer.compare(b[0], a[0]);
+                return Integer.compare(b[1], a[1]);
+            }
+        );
+
+        // 개수, 숫자
+        pq.add(new int[] {10, 8});
+        pq.add(new int[] {10, 9});
+        pq.add(new int[] {2, 4});
+        pq.add(new int[] {2, 5});
+        pq.add(new int[] {4, 7});
+        pq.add(new int[] {11, 3});
+        pq.add(new int[] {1, 1});
+
+        while (!pq.isEmpty()) System.out.println(Arrays.toString(pq.poll()));
     }
 }
