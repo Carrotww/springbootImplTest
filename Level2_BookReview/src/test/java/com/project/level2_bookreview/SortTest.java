@@ -356,5 +356,28 @@ public class SortTest {
         List<Integer> ary1 = new ArrayList<>(Arrays.asList(1, 2, 3, 0, -1, 10));
         ary1.sort(Comparator.naturalOrder());
         ary1.sort(Comparator.reverseOrder());
+
+        String[] stringAry = {};
+
+        Arrays.sort(stringAry, Comparator.naturalOrder());
+
+        List<String> stringAry2 = new ArrayList<>();
+        stringAry2.sort(Comparator.comparing((String ss) -> ss.length()).thenComparing(Comparator.naturalOrder()));
+
+        PriorityQueue<Integer> pq = new PriorityQueue<>();
+    }
+
+    @Test
+    void totalTest2() {
+        Deque<Integer> dq = new ArrayDeque<>();
+        dq.push(1);
+        dq.add(4);
+        dq.push(2);
+
+        System.out.println(dq);
+
+        dq.pop();
+
+        System.out.println(dq);
     }
 }

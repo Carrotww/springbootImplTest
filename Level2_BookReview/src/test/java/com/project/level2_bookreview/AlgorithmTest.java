@@ -253,7 +253,7 @@ class Search {
         System.out.println(result);
     }
 
-    static void slidingWindow3(int[] ary, int target, int k) {
+    static void slidingWindow22(int[] ary, int target, int k) {
         // for문 하나로 돌면서 0 부터 끝까까 그러면서 k 전에 있는건 지움
 
         int n = ary.length;
@@ -272,4 +272,5 @@ class Search {
 
         System.out.println(result);
     }
+
 }
