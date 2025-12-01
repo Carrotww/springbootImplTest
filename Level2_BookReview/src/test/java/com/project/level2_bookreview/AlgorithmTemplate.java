@@ -129,7 +129,26 @@ public class AlgorithmTemplate {
         // 1. 큐 준비, dist 배열 전부 -1 로 초기화
         // 2. start 를 큐에 넣고, dist[start] = 0
         // 3. 큐에서 하나씩 빼면서 인접 노드 확인, 처음 방문 시 dist 채우고 큐에 추가
-        return null;
+
+        int[] dist = new int[n];
+        Arrays.fill(dist, -1);
+        dist[start] = 0;
+
+        Deque<Integer> dq = new ArrayDeque<>();
+        dq.add(start);
+
+        while (!dq.isEmpty()) {
+            int cur = dq.poll();
+
+            for (int next : graph[cur]) {
+                if (dist[next] == -1) {
+                    dist[next] = dist[cur] + 1;
+                    dq.add(next);
+                }
+            }
+        }
+
+        return dist;
     }
 
     // Grid BFS (4방향)
@@ -140,7 +159,41 @@ public class AlgorithmTemplate {
         // 1. dr/dc = { {1,0}, {-1,0}, {0,1}, {0,-1} }
         // 2. 범위 체크 + 벽/방문 여부 체크
         // 3. dist 배열 or visited 배열 채우기
-        return null;
+
+        int r = board.length;
+        int c = board[0].length;
+
+        int[][] visited = new int[r][c];
+
+        for (int i = 0; i < r; i++) {
+            Arrays.fill(visited[i], -1);
+        }
+
+        int[] dr = new int[] {1, -1, 0, 0};
+        int[] dc = new int[] {0, 0, 1, -1};
+
+        Deque<int[]> dq = new ArrayDeque<>();
+        dq.add(new int[] {sr, sc});
+        visited[sr][sc] = 0;
+
+        while(!dq.isEmpty()) {
+            int[] cur = dq.poll();
+            int curR = cur[0];
+            int curC = cur[1];
+
+            for (int d = 0; d < 4; d++) {
+                int nR = curR + dr[d];
+                int nC = curC + dc[d];
+
+                if (nR < 0 || nR >= r || nC < 0 || nC >= c) continue;
+                if (visited[nR][nC] == -1) {
+                    visited[nR][nC] = visited[curR][curC] + 1;
+                    dq.add(new int[] {nR, nC});
+                }
+            }
+        }
+
+        return visited;
     }
 
     // 트리 DFS: 서브트리 크기 구하기
@@ -151,7 +204,17 @@ public class AlgorithmTemplate {
         // 1. 현재 노드 크기 1로 시작
         // 2. 자식들에 대해 재귀 호출, 돌아온 값 더하기
         // 3. subtreeSize[cur] 에 최종 값 저장, 리턴
-        return 0;
+
+        int size = 1;
+
+        for (int next : tree[cur]) {
+            if (next == parent) continue;
+
+            size += dfsSubtreeSize(next, cur, tree, subtreeSize);
+        }
+
+        subtreeSize[cur] = size;
+        return size;
     }
 
         /* ===========================
@@ -165,7 +228,7 @@ public class AlgorithmTemplate {
     //   graph[u] : {v, w} 형태의 간선 (무방향, 양수 가중치)
     // output :
     //   MST의 총 가중치 (연결 안돼 있으면 -1 같은거 리턴)
-    static long primMST(int n, List<int[]>[] graph) {
+    static long primMST(int n, int start, List<int[]>[] graph) {
         // TODO:
         // 1. visited[n] = false 로 초기화
         // 2. pq : (weight, node) 오름차순
@@ -176,7 +239,36 @@ public class AlgorithmTemplate {
         //    - 해당 정점에서 뻗어나가는 간선들 중
         //      아직 방문 안 된 정점들 pq에 push
         // 5. 방문한 정점 수가 n개가 아니면 MST 불가
-        return 0L;
+
+        boolean[] visited = new boolean[n];
+        long total = 0;
+        int visitedCnt = 0;
+
+        PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> Integer.compare(a[0], b[0]));
+        pq.add(new int[] {0, start});
+
+        while (!pq.isEmpty()) {
+            int[] cur = pq.poll();
+            int w = cur[0];
+            int u = cur[1];
+
+            if (visited[u]) continue;
+            visited[u] = true;
+            visitedCnt++;
+            total += w;
+
+            for (int[] next : graph[u]) {
+                if (visited[next[0]]) {
+                    pq.add(new int[] {next[1], next[0]});
+                }
+            }
+        }
+
+        if (visitedCnt != n) {
+            return -1;
+        }
+
+        return total;
     }
 
 
@@ -199,26 +291,52 @@ public class AlgorithmTemplate {
         //    - union(u, v)가 성공(=원래 다른 집합)이면
         //      -> MST에 포함, weight 더하기, 사용한 간선 수 증가
         // 4. 사용한 간선 수가 n-1이 아니면 MST 불가
-        return 0L;
+
+        Arrays.sort(edges, (a, b) -> Integer.compare(a[2], b[2]));
+
+        long total = 0;
+        int used = 0;
+
+        int[] parent = new int[n];
+        for (int i = 0; i < n; i++) {
+            parent[i] = i;
+        }
+
+        for (int[] edge : edges) {
+            int u = edge[0];
+            int v = edge[1];
+            int w = edge[2];
+
+            if (find(u, parent) != find(v, parent)) {
+                union(u, v, parent);
+                total += w;
+                used ++;
+            }
+
+            if (used == n - 1) break;
+        }
+
+        if (used != n - 1) return -1;
+
+        return total;
     }
 
-    static class UF {
-        int[] parent, rank;
-        UF(int n) {
-            // TODO: parent[i]=i, rank[i]=0
-        }
-
-        int find(int x) {
-            // TODO: path compression
-            return 0;
-        }
-
-        boolean union(int a, int b) {
-            // TODO: root 다르면 붙이고 true, 같으면 false
-            return false;
-        }
+    static int find(int x, int[] parent) {
+        if (x == parent[x]) return x;
+        parent[x] = find(x, parent);
+        return parent[x];
     }
 
+    static void union(int a, int b, int[] parent) {
+        a = find(a, parent);
+        b = find(b, parent);
+
+        if (a < b) {
+            parent[b] = a;
+        } else {
+            parent[a] = b;
+        }
+    }
 
     /* ===========================
      * 3. Bellman-Ford
@@ -294,36 +412,6 @@ public class AlgorithmTemplate {
         // 2. 큐에서 하나씩 꺼내 result에 넣고, 나가는 간선들 indegree 줄이기
         // 3. indegree 0 되면 큐에 넣기
         return null;
-    }
-
-    // Union-Find (Disjoint Set)
-    // 사용처: 연결 여부, 사이클 체크, 컴포넌트 개수 등
-    static class UnionFind {
-        int[] parent;
-        int[] rank; // or size
-
-        UnionFind(int n) {
-            // TODO: parent[i] = i, rank[i] = 1 초기화
-        }
-
-        int find(int x) {
-            // TODO: 경로 압축 (path compression)
-            return 0;
-        }
-
-        boolean union(int a, int b) {
-            // TODO:
-            // 1. rootA, rootB 찾기
-            // 2. 같으면 false 리턴 (이미 같은 집합)
-            // 3. rank/size 기준으로 작은 쪽을 큰 쪽 밑으로
-            // 4. true 리턴
-            return false;
-        }
-
-        boolean isConnected(int a, int b) {
-            // TODO: find(a) == find(b)
-            return false;
-        }
     }
 
 
